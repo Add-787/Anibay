@@ -18,16 +18,24 @@ class RetrofitDataSource @Inject constructor(
 
     override suspend fun loadAnimes(): List<NetworkAnime> {
 
-        val response = animeApi.getAnimes().execute();
-        val animes = response.body()?.get("data")?.asJsonArray
+        val response = animeApi.getAnimes()
 
-        if(animes == null)
-        {
+        if(response.isSuccessful) {
+            Timber.d("Response:%s", response.body())
+
+            val animes = response.body()?.get("data")
+
+            if(animes == null)
+            {
+                return emptyList()
+            }
+
+            val type = object: TypeToken<List<NetworkAnime>>() {}.type
+            val animeList: List<NetworkAnime> = Gson().fromJson(animes, type)
+            return animeList
+        } else {
             return emptyList()
         }
 
-        val type = object: TypeToken<List<NetworkAnime>>() {}.type
-        val animeList: List<NetworkAnime> = Gson().fromJson(animes, type)
-        return animeList
     }
 }

@@ -20,11 +20,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class HomeUiState(
     val animes: List<Anime> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val userMessage: Int? = null
 )
 
 /**
@@ -38,10 +40,16 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _isLoading = MutableStateFlow(false)
-
+    private val _userMessage: MutableStateFlow<Int?> = MutableStateFlow(null)
     private val _animes = animeRepository.getAnimesStream()
         .map { Async.Success(it) }
         .catch<Async<List<Anime>>> { emit(Async.Error(R.string.placeholder)) }
+
+//    init {
+//        viewModelScope.launch {
+//            animeRepository.getAnimesStream()
+//        }
+//    }
 
     val uiState: StateFlow<HomeUiState> = combine(_isLoading,_animes) {
         isLoading,animes ->
@@ -50,7 +58,10 @@ class HomeViewModel @Inject constructor(
                     HomeUiState(isLoading = true)
                 }
                 is Async.Error -> {
-                    HomeUiState(isLoading = false)
+                    HomeUiState(
+                        isLoading = false,
+                        userMessage = animes.errorMessage
+                    )
                 }
                 is Async.Success -> {
                     HomeUiState(

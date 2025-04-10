@@ -48,7 +48,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.jikan.moe/v4")
+            .baseUrl("https://api.jikan.moe/v4/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

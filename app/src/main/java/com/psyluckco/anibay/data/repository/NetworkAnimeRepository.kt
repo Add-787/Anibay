@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,7 +25,9 @@ class NetworkAnimeRepository @Inject constructor(
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) : AnimeRepository {
     override fun getAnimesStream(): Flow<List<Anime>> = flow {
-        emit(dataSource.loadAnimes().toAnime())
+        val animes = dataSource.loadAnimes().toAnime()
+        Timber.i("First anime:%s", animes[0])
+        emit(animes)
     }
 
     override suspend fun getAnime(animeId: String): Anime? {
