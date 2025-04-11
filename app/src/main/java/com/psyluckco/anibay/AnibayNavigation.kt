@@ -40,7 +40,7 @@ object AnibayDestinations {
  */
 class AnibayNavigationActions(private val navController: NavHostController) {
 
-    fun navigateToDetails(animeId: String?) {
+    fun navigateToDetails(animeId: Int?) {
         navController.navigate(
             DETAILS_SCREEN.let {
                 if(animeId != null) "$it?$ANIME_ID_ARG=$animeId" else it

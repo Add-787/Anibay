@@ -12,6 +12,6 @@ interface AnimeApi {
     suspend fun getAnimes(): Response<JsonObject>
 
     @GET("anime/{id}")
-    suspend fun getAnimeById(@Path("id") id: String): Call<JsonObject>
+    suspend fun getAnimeById(@Path("id") id: Int): Response<JsonObject>
 
 }

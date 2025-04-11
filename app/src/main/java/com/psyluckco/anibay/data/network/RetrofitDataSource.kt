@@ -6,6 +6,7 @@
 
 package com.psyluckco.anibay.data.network
 
+import coil.util.CoilUtils.result
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.psyluckco.anibay.data.model.Anime
@@ -37,5 +38,28 @@ class RetrofitDataSource @Inject constructor(
             return emptyList()
         }
 
+    }
+
+    override suspend fun loadAnimeById(id: Int): NetworkDetail {
+
+        val response = animeApi.getAnimeById(id)
+
+        if(response.isSuccessful) {
+            Timber.d("Anime details: %s", response.body())
+
+            val animeDetail = response.body()?.get("data");
+
+            if(animeDetail == null)
+            {
+                throw Exception();
+            }
+
+            val type = object: TypeToken<NetworkDetail>() {}.type
+            val result: NetworkDetail = Gson().fromJson(animeDetail, type)
+            return result;
+
+        } else {
+            throw Exception("Could not load anime details")
+        }
     }
 }

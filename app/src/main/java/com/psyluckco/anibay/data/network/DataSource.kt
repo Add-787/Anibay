@@ -8,4 +8,6 @@ package com.psyluckco.anibay.data.network
 
 interface DataSource {
     suspend fun loadAnimes(): List<NetworkAnime>
+
+    suspend fun loadAnimeById(id: Int): NetworkDetail
 }

@@ -6,6 +6,7 @@
 
 package com.psyluckco.anibay.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -43,7 +44,7 @@ import kotlin.contracts.contract
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onAnimeClicked: () -> Unit,
+    onAnimeClicked: (Int) -> Unit,
     snackbarHostState: SnackbarHostState = remember {
         SnackbarHostState()
     },
@@ -74,7 +75,7 @@ fun HomeScreen(
 fun HomeContent(
     isLoading: Boolean,
     animes: List<Anime>,
-    onAnimeClick: () -> Unit,
+    onAnimeClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -85,7 +86,8 @@ fun HomeContent(
             EmptyContent()
         } else {
             AnimeList(
-                animes = animes
+                animes = animes,
+                onAnimeClicked = onAnimeClick
             )
         }
     }
@@ -106,6 +108,7 @@ fun EmptyContent(modifier: Modifier = Modifier) {
 @Composable
 fun AnimeList(
     animes: List<Anime> = emptyList<Anime>(),
+    onAnimeClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -113,7 +116,10 @@ fun AnimeList(
         verticalArrangement = Arrangement.spacedBy(3.dp)
     ) {
         items(animes) {
-            anime -> AnimeItem(anime = anime)
+            anime -> AnimeItem(
+                anime = anime,
+                onItemClicked = onAnimeClicked
+            )
                 
         }
     }
@@ -123,6 +129,7 @@ fun AnimeList(
 @Composable
 fun AnimeItem(
     anime: Anime,
+    onItemClicked: (Int) -> Unit = { },
     modifier: Modifier = Modifier
 ) {
     ListItem(
@@ -143,7 +150,8 @@ fun AnimeItem(
                 Icon(imageVector = Icons.Default.Star, contentDescription = null)
                 Text(text = anime.rating.toString())
             }
-        }
+        },
+        modifier = modifier.clickable(onClick = { onItemClicked(anime.id) })
     )
 }
 
@@ -153,6 +161,7 @@ private fun AnimeItemPreview() {
     AnibayTheme {
         AnimeItem(
             anime = Anime(
+                id = 3,
                 title = "Cowboy Bebop",
                 noOfEpisodes = 4,
                 rating = 4.5,
@@ -170,18 +179,21 @@ private fun SomeAnimesPreview() {
             isLoading = false,
             animes = listOf(
                 Anime(
+                    id = 3,
                     title = "Cowboy Bebop",
                     noOfEpisodes = 4,
                     rating = 4.5,
                     imgUrl = "https://cdn.myanimelist.net/images/anime/1015/138006.jpg"
                 ),
                 Anime(
+                    id = 4,
                     title = "Cowboy Bebop",
                     noOfEpisodes = 4,
                     rating = 4.5,
                     imgUrl = "https://cdn.myanimelist.net/images/anime/1015/138006.jpg"
                 ),
                 Anime(
+                    id = 5,
                     title = "Cowboy Bebop",
                     noOfEpisodes = 4,
                     rating = 4.5,

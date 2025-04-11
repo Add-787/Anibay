@@ -7,7 +7,9 @@
 package com.psyluckco.anibay.data.repository
 
 import com.psyluckco.anibay.data.model.Anime
+import com.psyluckco.anibay.data.model.AnimeDetail
 import com.psyluckco.anibay.data.model.toAnime
+import com.psyluckco.anibay.data.model.toAnimeDetail
 import com.psyluckco.anibay.data.network.DataSource
 import com.psyluckco.anibay.di.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -30,7 +32,15 @@ class NetworkAnimeRepository @Inject constructor(
         emit(animes)
     }
 
-    override suspend fun getAnime(animeId: String): Anime? {
-        TODO("Not yet implemented")
+    override suspend fun getAnime(animeId: Int): AnimeDetail? {
+        try {
+
+            val anime = dataSource.loadAnimeById(animeId).toAnimeDetail()
+            Timber.i("Anime detail:%s", anime.title)
+            return anime
+
+        } catch(e: Exception) {
+            return null;
+        }
     }
 }
