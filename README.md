@@ -16,3 +16,8 @@ I have followed the following standard design practices for this project:
 - Integration of hilt for easier dependency injection.
 - Usage of Jetpack compose for ui development.
 - Interfaces created to abstract out the logic for network implementations.
+
+## Material UI
+<div align="center">
+  <img src="https://github.com/Add-787/Anibay/blob/main/assets/Screenshot_20250411_094617_anibay.jpg" width="320" height="600">
+</div>
