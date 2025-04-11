@@ -4,7 +4,8 @@ A simple anime application to list out all the series and show their details.
 ## Table of Contents
 - [Setup and Configuration Guide](#setup-and-configuration-guide)
 - [Design](#design)
-
+- [Material UI](#material-ui)
+  
 ## Setup and Configuration Guide
 You can get started on developing this application by following a few steps:
 - Just clone this repository.
