@@ -6,10 +6,14 @@
 
 package com.psyluckco.anibay.data.model
 
+import com.google.gson.internal.LinkedTreeMap
 import com.psyluckco.anibay.data.network.NetworkAnime
 
 fun NetworkAnime.toAnime() = Anime(
-    title = title
+    title = title,
+    noOfEpisodes = episodes,
+    rating = score,
+    imgUrl = images.jpg.imageUrl
 )
 
 fun List<NetworkAnime>.toAnime() = map(NetworkAnime::toAnime)
